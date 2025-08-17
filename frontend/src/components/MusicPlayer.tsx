@@ -410,8 +410,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         </div>
 
         {/* Mobile: Bottom-attached player like Spotify */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
-          <div className="bg-white/80 dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-[9999]">
+          <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-lg">
             {/* Audio Element */}
             <audio 
               ref={audioRef}
