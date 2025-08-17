@@ -61,7 +61,14 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
     if (!audio) return;
 
     const handleEnded = () => {
-      onNext();
+      if (isRepeating) {
+        // If repeat is enabled, restart the same song
+        audio.currentTime = 0;
+        audio.play().catch(console.error);
+      } else {
+        // If repeat is disabled, go to next song
+        onNext();
+      }
     };
 
     const handlePlay = () => {
@@ -99,7 +106,7 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
       audio.removeEventListener('canplay', handleCanPlay);
       audio.removeEventListener('error', handleError);
     };
-  }, [onNext]);
+  }, [onNext, isRepeating]);
 
   // Handle track changes
   useEffect(() => {
