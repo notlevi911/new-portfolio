@@ -279,7 +279,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           </div>
           
           {/* Mobile: Up arrow button at bottom center */}
-          <div className="md:hidden fixed left-1/2 transform -translate-x-1/2 z-[99999] bottom-4">
+          <div className="md:hidden fixed left-1/2 transform -translate-x-1/2 z-[99999]" style={{ bottom: 'calc(env(safe-area-inset-bottom, 20px) + 20px)' }}>
             <button
               onClick={handleToggle}
               className="bg-white dark:bg-neutral-800 p-2 rounded-full shadow-lg border border-gray-300 dark:border-gray-600"
@@ -426,7 +426,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         {/* Mobile: Bottom-attached player like Spotify - Always visible like navbar */}
         <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
           isMinimized ? 'translate-y-full' : 'translate-y-0'
-        } bottom-0`}>
+        }`} style={{ bottom: 'env(safe-area-inset-bottom, 20px)' }}>
           <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl">
             {/* Debug: Force visible test */}
             <div className="text-red-500 text-xs font-bold mb-2">🎵 MUSIC PLAYER VISIBLE 🎵</div>

@@ -99,7 +99,7 @@ const App: React.FC = () => {
   return (
     <div className="h-screen bg-amber-50 dark:bg-neutral-800 text-gray-800 dark:text-white overflow-hidden">
       {/* Navigation */}
-      <nav className="bg-amber-50 dark:bg-neutral-800 h-16">
+      <nav className="bg-amber-50 dark:bg-neutral-800 h-16 fixed top-0 left-0 right-0 z-50">
         <div className="max-w-6xl mx-auto px-6 h-full">
           <div className="flex justify-between items-center h-full">
             <div className="flex items-center space-x-4">
@@ -202,7 +202,7 @@ const App: React.FC = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="h-[calc(100vh-4rem)]">
+      <div className="h-[calc(100vh-4rem)] overflow-y-auto pt-16">
         {currentPage === 'home' ? (
           /* Home Page */
           <div className="h-[85%] flex flex-col md:flex-row justify-center items-center px-4 md:px-8 md:py-0 pb-24 md:pb-0">
