@@ -273,7 +273,7 @@ const App: React.FC = () => {
             {/* Left Side - Introduction */}
             <div className="flex-1 max-w-2xl md:pr-24 mb-8 md:mb-0">
               <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-gray-800 dark:text-white">
-                hello
+                hello,
               </h1>
               
               <div className="space-y-4 md:space-y-6 text-base md:text-lg text-gray-600 dark:text-gray-400">
