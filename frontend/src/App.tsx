@@ -14,12 +14,50 @@ import {
   X
 } from 'lucide-react';
 import MusicPlayer from './components/MusicPlayer';
+import DesktopMusicPlayer from './components/DesktopMusicPlayer';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [currentPage, setCurrentPage] = useState<'home' | 'projects'>('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMusicPlayerVisible] = useState(true);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isDesktopPlayerVisible, setIsDesktopPlayerVisible] = useState(true);
+  const [activePlayer, setActivePlayer] = useState<'mobile' | 'desktop'>('desktop'); // Track which player is active
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(0);
+  const [volume, setVolume] = useState(0.5);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [isRepeating, setIsRepeating] = useState(false);
+  const [loadingTrack, setLoadingTrack] = useState<number | null>(null);
+  const [playlist, setPlaylist] = useState<any[]>([]);
+
+  // Shared audio context to ensure only one player plays at a time
+  const [sharedAudioState, setSharedAudioState] = useState({
+    isPlaying: false,
+    currentTrack: 0,
+    volume: 0.5,
+    isMuted: false
+  });
+
+  // Function to handle play/pause that automatically pauses other player
+  const handleGlobalPlayPause = (playerType: 'mobile' | 'desktop') => {
+    if (playerType === 'mobile') {
+      // Mobile player is playing, pause desktop
+      setIsPlaying(false);
+      setActivePlayer('mobile');
+    } else {
+      // Desktop player is playing, pause mobile
+      setActivePlayer('desktop');
+      setIsPlaying(!isPlaying);
+      
+      // Dispatch custom event to notify mobile player to pause
+      if (isPlaying) {
+        window.dispatchEvent(new CustomEvent('desktopPlayerStart'));
+      }
+    }
+  };
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
@@ -35,6 +73,45 @@ const App: React.FC = () => {
     }
   }, []);
 
+  // Initialize real playlist from Cloudinary (same as MusicPlayer)
+  useEffect(() => {
+    const loadMusicFromCloudinary = async () => {
+      try {
+        // Your uploaded songs with Cloudinary URLs (same as MusicPlayer)
+        const allSongs = [
+          { title: "New Home (Slowed)", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418684/x7uiq0a0ztuqxnzkp6yl.mp3", filename: "New_Home_Slowed.mp3" },
+          { title: "City Of Stars", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418705/pcxirwogzl1mhjwqmvec.mp3", filename: "City_Of_Stars.mp3" },
+          { title: "Wind Song", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418732/tgsyhwm230uje0mv6hb0.mp3", filename: "Wind_Song.mp3" },
+          { title: "Amore mio aiutami", artist: "Italian", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418751/hrqvt1a9esa6dszgzb1x.mp3", filename: "Amore_mio_aiutami.mp3" },
+          { title: "Shingeki", artist: "Anime", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418772/v4dbyere7wzefpfh91ti.mp3", filename: "Shingeki.mp3" },
+          { title: "Armstrong Cabin", artist: "Gaming", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418786/qbg3rahkx81ducrhpvmj.mp3", filename: "Armstrong_Cabin.mp3" },
+          { title: "The Last of Us (Astray)", artist: "Gaming", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418847/g5wczzpslsd8phclmkr1.mp3", filename: "The_Last_of_Us_Astray.mp3" },
+          { title: "Engagement Party", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418865/iuxpolgwhg2dcsi5b4b3.mp3", filename: "Engagement_Party.mp3" },
+          { title: "Only", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419102/gasvwb1s6rzwkvg2xljy.mp3", filename: "Only.mp3" },
+          { title: "Dolce Nonna", artist: "Classical", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419127/zscxnqkfiqzg0nv7gxkq.mp3", filename: "Dolce_Nonna.mp3" },
+          { title: "Little Waltz", artist: "Classical", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419146/plqh2il8lgjkgyca6myo.mp3", filename: "Little_Waltz.mp3" },
+          { title: "Nocturnal", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419169/rwlmkynathwsmgpgpiqg.mp3", filename: "Nocturnal.mp3" },
+          { title: "Unshaken", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419192/wlkmuwkzzjyamdfbpbnj.mp3", filename: "Unshaken.mp3" }
+        ];
+        
+        const availableSongs = allSongs.filter(song => song.url !== "");
+        
+        if (availableSongs.length > 0) {
+          setPlaylist(availableSongs);
+          const randomIndex = Math.floor(Math.random() * availableSongs.length);
+          setCurrentTrack(randomIndex);
+          console.log(`Loaded ${availableSongs.length} tracks from Cloudinary`);
+        } else {
+          console.log('No music files found');
+        }
+      } catch (error) {
+        console.error('Error loading music:', error);
+      }
+    };
+
+    loadMusicFromCloudinary();
+  }, []);
+
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
@@ -46,6 +123,41 @@ const App: React.FC = () => {
     }
     
     localStorage.setItem('theme', newTheme);
+  };
+
+  // Function to switch to mobile player
+  const switchToMobilePlayer = () => {
+    setActivePlayer('mobile');
+    setIsPlaying(false); // Stop current playback
+    setIsMinimized(true); // Minimize desktop player
+  };
+
+  // Function to switch to desktop player
+  const switchToDesktopPlayer = () => {
+    setActivePlayer('desktop');
+    setIsPlaying(false); // Stop current playback
+  };
+
+  // Function to handle when mobile player starts playing
+  const handleMobilePlayerPlay = () => {
+    setIsPlaying(false); // Pause desktop player
+    setActivePlayer('mobile');
+    setSharedAudioState(prev => ({ ...prev, isPlaying: true }));
+  };
+
+  // Function to handle when desktop player starts playing
+  const handleDesktopPlayerPlay = () => {
+    setActivePlayer('desktop');
+    setSharedAudioState(prev => ({ ...prev, isPlaying: true }));
+  };
+
+  // Function to handle play/pause that respects active player
+  const handlePlayPause = () => {
+    if (activePlayer === 'desktop') {
+      const newPlayingState = !isPlaying;
+      setIsPlaying(newPlayingState);
+      setSharedAudioState(prev => ({ ...prev, isPlaying: newPlayingState }));
+    }
   };
 
   const socialLinks = [
@@ -205,7 +317,7 @@ const App: React.FC = () => {
       <div className="h-[calc(100vh-4rem)] overflow-y-auto pt-16">
         {currentPage === 'home' ? (
           /* Home Page */
-          <div className="h-[85%] flex flex-col md:flex-row justify-center items-center px-4 md:px-8 md:py-0 pb-10 md:pb-0">
+          <div className="h-[90%] flex flex-col md:flex-row justify-center items-center px-4 md:px-8 md:py-0 pb-10 md:pb-0">
             {/* Left Side - Introduction */}
             <div className="flex-1 max-w-2xl md:pr-24 mb-8 md:mb-0">
               <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-gray-800 dark:text-white">
@@ -333,6 +445,33 @@ const App: React.FC = () => {
       <MusicPlayer 
         isVisible={isMusicPlayerVisible}
       />
+
+      {/* Desktop Music Player */}
+      {isDesktopPlayerVisible && (
+        <DesktopMusicPlayer
+          isVisible={isMusicPlayerVisible}
+          isMinimized={isMinimized}
+          isPlaying={isPlaying}
+          currentTrack={currentTrack}
+          playlist={playlist}
+          volume={volume}
+          isMuted={isMuted}
+          isShuffled={isShuffled}
+          isRepeating={isRepeating}
+          loadingTrack={loadingTrack}
+          onToggle={() => setIsMinimized(!isMinimized)}
+                     onClose={() => setIsMinimized(true)}
+          onPlay={() => handleGlobalPlayPause('desktop')}
+          onPrevious={() => setCurrentTrack(prev => (prev - 1 + playlist.length) % playlist.length)}
+          onNext={() => setCurrentTrack(prev => (prev + 1) % playlist.length)}
+          onShuffle={() => setIsShuffled(!isShuffled)}
+          onRepeat={() => setIsRepeating(!isRepeating)}
+          onVolumeChange={(newVolume) => setVolume(newVolume)}
+          onMute={() => setIsMuted(!isMuted)}
+          onIncreaseVolume={() => setVolume(prev => Math.min(1, prev + 0.1))}
+          onDecreaseVolume={() => setVolume(prev => Math.max(0, prev - 0.1))}
+        />
+      )}
     </div>
   );
 };
