@@ -18,7 +18,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
   const [playlist, setPlaylist] = useState<Track[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingTrack, setLoadingTrack] = useState<number | null>(null);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true); // Start hidden by default on mobile
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
