@@ -280,7 +280,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           
           {/* Mobile: Up arrow button at bottom center */}
           <div className="md:hidden fixed left-1/2 transform -translate-x-1/2 z-[99999]" style={{ 
-            bottom: 'max(env(safe-area-inset-bottom, 16px), 16px)'
+            top: 'calc(100vh - 90px - env(safe-area-inset-bottom, 0px))'
           }}>
             <button
               onClick={handleToggle}
@@ -429,9 +429,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
           isMinimized ? 'translate-y-full' : 'translate-y-0'
         }`} style={{ 
-          bottom: '0',
-          paddingBottom: 'max(env(safe-area-inset-bottom, 16px), 16px)',
-          minHeight: 'calc(env(safe-area-inset-bottom, 0px) + 80px)'
+          top: 'calc(100vh - 80px - env(safe-area-inset-bottom, 0px))',
+          height: '80px'
         }}>
           <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl">
             {/* Audio Element */}
