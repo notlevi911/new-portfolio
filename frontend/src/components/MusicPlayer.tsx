@@ -234,6 +234,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
 
   if (!isVisible) return null;
 
+  // Debug logging for mobile
+  console.log('MusicPlayer render:', { isVisible, isLoading, playlistLength: playlist.length, isMinimized });
+
   if (isLoading) {
     return (
       <div className="fixed bottom-4 right-4 z-50">
@@ -276,7 +279,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           </div>
           
           {/* Mobile: Up arrow button at bottom center */}
-          <div className="md:hidden fixed bottom-2 left-1/2 transform -translate-x-1/2 z-[9999]">
+          <div className="md:hidden fixed bottom-2 left-1/2 transform -translate-x-1/2 z-[99999]">
             <button
               onClick={handleToggle}
               className="bg-white dark:bg-neutral-800 p-2 rounded-full shadow-lg border border-gray-300 dark:border-gray-600"
@@ -421,10 +424,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         </div>
 
         {/* Mobile: Bottom-attached player like Spotify - Always visible like navbar */}
-        <div className={`md:hidden fixed left-0 right-0 z-[9999] transition-transform duration-300 ease-in-out ${
+        <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
           isMinimized ? 'translate-y-full' : 'translate-y-0'
         } bottom-0`}>
-          <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-lg">
+          <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl">
+            {/* Debug: Red test bar to see if mobile player is visible */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-red-500"></div>
             {/* Audio Element */}
             <audio 
               ref={audioRef}
