@@ -205,7 +205,7 @@ const App: React.FC = () => {
       <div className="h-[calc(100vh-4rem)] overflow-y-auto pt-16">
         {currentPage === 'home' ? (
           /* Home Page */
-          <div className="h-[85%] flex flex-col md:flex-row justify-center items-center px-4 md:px-8 md:py-0 pb-24 md:pb-0">
+          <div className="h-[95%] flex flex-col md:flex-row justify-center items-center px-4 md:px-8 md:py-0 pb-10 md:pb-0">
             {/* Left Side - Introduction */}
             <div className="flex-1 max-w-2xl md:pr-24 mb-8 md:mb-0">
               <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-gray-800 dark:text-white">
@@ -248,7 +248,7 @@ const App: React.FC = () => {
           </div>
         ) : (
           /* Projects Page */
-          <div className="h-full p-4 md:p-12 pb-24 md:pb-12 overflow-y-auto">
+          <div className="h-full p-4 md:p-12 pb-20 md:pb-12 overflow-y-auto">
             <div className="max-w-6xl mx-auto">
               <h1 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-gray-800 dark:text-white">
                 Projects & Experience

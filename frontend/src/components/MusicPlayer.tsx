@@ -426,10 +426,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         {/* Mobile: Bottom-attached player like Spotify - Always visible like navbar */}
         <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
           isMinimized ? 'translate-y-full' : 'translate-y-0'
-        }`} style={{ bottom: 'env(safe-area-inset-bottom, 20px)' }}>
-          <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl">
-            {/* Debug: Force visible test */}
-            <div className="text-red-500 text-xs font-bold mb-2">🎵 MUSIC PLAYER VISIBLE 🎵</div>
+        }`} style={{ bottom: 'env(safe-area-inset-bottom, 0px)' }}>
+          <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl" style={{ minHeight: '80px' }}>
             {/* Audio Element */}
             <audio 
               ref={audioRef}
