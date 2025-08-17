@@ -283,7 +283,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, theme }) => {
         isMinimized ? 'translate-y-full' : 'translate-y-0'
       }`} style={{ bottom: 0 }}>
         <motion.div 
-          className="border-t p-4 shadow-xl max-h-[80vh] overflow-y-auto"
+          className="border-t p-4 shadow-xl max-h-[80vh] overflow-y-auto scrollbar-hide"
           style={{ minHeight: '90px' }}
           initial={false}
           animate={{
