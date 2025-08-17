@@ -3,7 +3,6 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Repeat, Shuffle, 
 
 interface MusicPlayerProps {
   isVisible: boolean;
-  onToggle: () => void;
 }
 
 interface Track {
@@ -13,7 +12,7 @@ interface Track {
   filename: string;
 }
 
-const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, onToggle }) => {
+const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [volume, setVolume] = useState(0.5);
@@ -24,8 +23,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, onToggle }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingTrack, setLoadingTrack] = useState<number | null>(null);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+
   
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -232,35 +230,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, onToggle }) => {
     setIsMinimized(!isMinimized);
   };
 
-  const formatTime = (time: number): string => {
-    if (isNaN(time)) return '0:00';
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
 
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration);
-    }
-  };
-
-  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (audioRef.current) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const width = rect.width;
-      const clickTime = (clickX / width) * duration;
-      audioRef.current.currentTime = clickTime;
-      setCurrentTime(clickTime);
-    }
-  };
 
   if (!isVisible) return null;
 
@@ -334,8 +304,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, onToggle }) => {
               ref={audioRef}
               src={playlist[currentTrack]?.url}
               onEnded={handleNext}
-              onTimeUpdate={handleTimeUpdate}
-              onLoadedMetadata={handleLoadedMetadata}
+
               onCanPlay={() => setLoadingTrack(null)}
               onError={() => setLoadingTrack(null)}
               style={{ display: 'none' }}
@@ -448,8 +417,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, onToggle }) => {
               ref={audioRef}
               src={playlist[currentTrack]?.url}
               onEnded={handleNext}
-              onTimeUpdate={handleTimeUpdate}
-              onLoadedMetadata={handleLoadedMetadata}
+
               onCanPlay={() => setLoadingTrack(null)}
               onError={() => setLoadingTrack(null)}
               style={{ display: 'none' }}

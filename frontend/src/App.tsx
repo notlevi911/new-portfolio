@@ -19,7 +19,7 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [currentPage, setCurrentPage] = useState<'home' | 'projects'>('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMusicPlayerVisible, setIsMusicPlayerVisible] = useState(true);
+  const [isMusicPlayerVisible] = useState(true);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
@@ -318,8 +318,8 @@ const App: React.FC = () => {
                               {i < exp.description.length - 1 ? <br /> : ''}
                             </span>
                           ))}
-                        </p>
-                      </div>
+        </p>
+      </div>
                     ))}
                   </div>
                 </div>
@@ -332,7 +332,6 @@ const App: React.FC = () => {
       {/* Music Player */}
       <MusicPlayer 
         isVisible={isMusicPlayerVisible}
-        onToggle={() => setIsMusicPlayerVisible(!isMusicPlayerVisible)}
       />
     </div>
   );
