@@ -212,8 +212,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, theme }) => {
           className="rounded-lg shadow-lg p-4 w-80"
           initial={false}
           animate={{
-            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(38, 38, 38, 1)',
-            color: theme === 'light' ? '#4b5563' : '#9ca3af'
+            backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.95)' : 'rgba(38, 38, 38, 1)',
+            color: theme === 'light' ? '#92400e' : '#9ca3af'
           }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
         >
@@ -232,8 +232,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, theme }) => {
           className="rounded-lg shadow-lg p-4 w-80"
           initial={false}
           animate={{
-            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(38, 38, 38, 1)',
-            color: theme === 'light' ? '#4b5563' : '#9ca3af'
+            backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.95)' : 'rgba(38, 38, 38, 1)',
+            color: theme === 'light' ? '#92400e' : '#9ca3af'
           }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
         >
@@ -265,9 +265,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, theme }) => {
             className="p-3 rounded-full shadow-lg border hover:scale-105 transition-transform"
             initial={false}
             animate={{
-              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(38, 38, 38, 1)',
-              borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)',
-              color: theme === 'light' ? '#1f2937' : '#ffffff'
+              backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.95)' : 'rgba(38, 38, 38, 1)',
+              borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(82, 82, 82, 1)',
+              color: theme === 'light' ? '#92400e' : '#ffffff'
             }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
@@ -287,8 +287,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, theme }) => {
           style={{ minHeight: '90px' }}
           initial={false}
           animate={{
-            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(38, 38, 38, 1)',
-            borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)'
+            backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.95)' : 'rgba(38, 38, 38, 1)',
+            borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(82, 82, 82, 1)'
           }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
         >

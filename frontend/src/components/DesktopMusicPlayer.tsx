@@ -154,9 +154,9 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
             className="p-3 rounded-full shadow-lg hover:scale-105 transition-all duration-200 border"
             initial={false}
             animate={{
-              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(38, 38, 38, 0.9)',
-              borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)',
-              color: theme === 'light' ? '#1f2937' : '#ffffff'
+              backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.95)' : 'rgba(38, 38, 38, 0.9)',
+              borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(82, 82, 82, 1)',
+              color: theme === 'light' ? '#92400e' : '#ffffff'
             }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
@@ -173,8 +173,8 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
           className="backdrop-blur-sm rounded-xl shadow-2xl border w-72 p-2"
           initial={false}
           animate={{
-            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(38, 38, 38, 0.95)',
-            borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)'
+            backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.95)' : 'rgba(38, 38, 38, 0.95)',
+            borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(82, 82, 82, 1)'
           }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
         >

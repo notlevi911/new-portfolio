@@ -67,3 +67,35 @@ input[type="range"]::-moz-range-thumb {
   background: #a3a3a3; /* neutral-400 */
 }
 
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(254, 243, 199, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.8);
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: rgba(38, 38, 38, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(82, 82, 82, 0.6);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(82, 82, 82, 0.8);
+}
+
