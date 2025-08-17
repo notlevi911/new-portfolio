@@ -267,7 +267,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
       {isMinimized && (
         <>
           {/* Desktop: Right arrow button */}
-          <div className="hidden md:block fixed bottom-4 right-4 z-50">
+          <div className="hidden md:block fixed bottom-4 right-4 z-[99999]">
             <button
               onClick={handleToggle}
               className="bg-white/80 dark:bg-neutral-800 p-3 rounded-full shadow-lg hover:scale-105 transition-transform"
@@ -279,7 +279,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           </div>
           
           {/* Mobile: Up arrow button at bottom center */}
-          <div className="md:hidden fixed left-1/2 transform -translate-x-1/2 z-[99999]" style={{ bottom: 'calc(env(safe-area-inset-bottom, 20px) + 20px)' }}>
+          <div className="md:hidden fixed left-1/2 transform -translate-x-1/2 z-[99999]" style={{ bottom: 0 }}>
             <button
               onClick={handleToggle}
               className="bg-white dark:bg-neutral-800 p-2 rounded-full shadow-lg border border-gray-300 dark:border-gray-600"
@@ -299,8 +299,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           : 'translate-x-0'
       }`}>
         {/* Desktop: Floating player with smaller height */}
-        <div className="hidden md:block fixed bottom-4 right-4 z-50">
-          <div className="bg-white/80 dark:bg-neutral-800 rounded-lg shadow-lg p-3 w-72">
+        <div className="hidden md:block fixed bottom-0 right-0 z-[99999]">
+          <div className="bg-white/80 dark:bg-neutral-800 rounded-tl-lg shadow-lg p-3 w-72">
             {/* Close button only */}
             <div className="flex justify-end mb-3">
               <button
@@ -426,8 +426,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         {/* Mobile: Bottom-attached player like Spotify - Always visible like navbar */}
         <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
           isMinimized ? 'translate-y-full' : 'translate-y-0'
-        }`} style={{ bottom: 'env(safe-area-inset-bottom, 0px)' }}>
-          <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl" style={{ minHeight: '80px' }}>
+        }`} style={{ bottom: 0 }}>
+          <div className="border-t border-gray-300 dark:border-gray-600 p-3" style={{ minHeight: '80px' }}>
             {/* Audio Element */}
             <audio 
               ref={audioRef}
