@@ -22,34 +22,21 @@ const App: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMusicPlayerVisible] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [isDesktopPlayerVisible, setIsDesktopPlayerVisible] = useState(true);
-  const [activePlayer, setActivePlayer] = useState<'mobile' | 'desktop'>('desktop'); // Track which player is active
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [volume, setVolume] = useState(0.5);
   const [isMuted, setIsMuted] = useState(false);
   const [isShuffled, setIsShuffled] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
-  const [loadingTrack, setLoadingTrack] = useState<number | null>(null);
   const [playlist, setPlaylist] = useState<any[]>([]);
-
-  // Shared audio context to ensure only one player plays at a time
-  const [sharedAudioState, setSharedAudioState] = useState({
-    isPlaying: false,
-    currentTrack: 0,
-    volume: 0.5,
-    isMuted: false
-  });
 
   // Function to handle play/pause that automatically pauses other player
   const handleGlobalPlayPause = (playerType: 'mobile' | 'desktop') => {
     if (playerType === 'mobile') {
       // Mobile player is playing, pause desktop
       setIsPlaying(false);
-      setActivePlayer('mobile');
     } else {
       // Desktop player is playing, pause mobile
-      setActivePlayer('desktop');
       setIsPlaying(!isPlaying);
       
       // Dispatch custom event to notify mobile player to pause
@@ -123,41 +110,6 @@ const App: React.FC = () => {
     }
     
     localStorage.setItem('theme', newTheme);
-  };
-
-  // Function to switch to mobile player
-  const switchToMobilePlayer = () => {
-    setActivePlayer('mobile');
-    setIsPlaying(false); // Stop current playback
-    setIsMinimized(true); // Minimize desktop player
-  };
-
-  // Function to switch to desktop player
-  const switchToDesktopPlayer = () => {
-    setActivePlayer('desktop');
-    setIsPlaying(false); // Stop current playback
-  };
-
-  // Function to handle when mobile player starts playing
-  const handleMobilePlayerPlay = () => {
-    setIsPlaying(false); // Pause desktop player
-    setActivePlayer('mobile');
-    setSharedAudioState(prev => ({ ...prev, isPlaying: true }));
-  };
-
-  // Function to handle when desktop player starts playing
-  const handleDesktopPlayerPlay = () => {
-    setActivePlayer('desktop');
-    setSharedAudioState(prev => ({ ...prev, isPlaying: true }));
-  };
-
-  // Function to handle play/pause that respects active player
-  const handlePlayPause = () => {
-    if (activePlayer === 'desktop') {
-      const newPlayingState = !isPlaying;
-      setIsPlaying(newPlayingState);
-      setSharedAudioState(prev => ({ ...prev, isPlaying: newPlayingState }));
-    }
   };
 
   const socialLinks = [
@@ -447,7 +399,7 @@ const App: React.FC = () => {
       />
 
       {/* Desktop Music Player */}
-      {isDesktopPlayerVisible && (
+      {/* isDesktopPlayerVisible && ( // This line was removed */}
         <DesktopMusicPlayer
           isVisible={isMusicPlayerVisible}
           isMinimized={isMinimized}
@@ -458,7 +410,7 @@ const App: React.FC = () => {
           isMuted={isMuted}
           isShuffled={isShuffled}
           isRepeating={isRepeating}
-          loadingTrack={loadingTrack}
+          loadingTrack={null} // loadingTrack was removed
           onToggle={() => setIsMinimized(!isMinimized)}
                      onClose={() => setIsMinimized(true)}
           onPlay={() => handleGlobalPlayPause('desktop')}
@@ -466,12 +418,11 @@ const App: React.FC = () => {
           onNext={() => setCurrentTrack(prev => (prev + 1) % playlist.length)}
           onShuffle={() => setIsShuffled(!isShuffled)}
           onRepeat={() => setIsRepeating(!isRepeating)}
-          onVolumeChange={(newVolume) => setVolume(newVolume)}
           onMute={() => setIsMuted(!isMuted)}
           onIncreaseVolume={() => setVolume(prev => Math.min(1, prev + 0.1))}
           onDecreaseVolume={() => setVolume(prev => Math.max(0, prev - 0.1))}
         />
-      )}
+      {/* ) // This line was removed */}
     </div>
   );
 };

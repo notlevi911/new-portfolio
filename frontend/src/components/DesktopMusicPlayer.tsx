@@ -26,7 +26,6 @@ interface DesktopMusicPlayerProps {
   onNext: () => void;
   onShuffle: () => void;
   onRepeat: () => void;
-  onVolumeChange: (volume: number) => void;
   onMute: () => void;
   onIncreaseVolume: () => void;
   onDecreaseVolume: () => void;
@@ -50,7 +49,6 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
   onNext,
   onShuffle,
   onRepeat,
-  onVolumeChange,
   onMute,
   onIncreaseVolume,
   onDecreaseVolume,
