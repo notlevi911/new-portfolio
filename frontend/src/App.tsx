@@ -21,7 +21,6 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [currentPage, setCurrentPage] = useState<'home' | 'projects'>('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMusicPlayerVisible] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
@@ -30,20 +29,15 @@ const App: React.FC = () => {
   const [isShuffled, setIsShuffled] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
   const [playlist, setPlaylist] = useState<any[]>([]);
-  const [visitedPages, setVisitedPages] = useState<Set<string>>(new Set(['home']));
-  const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null); // For underline animation
 
   // Function to handle play/pause that automatically pauses other player
   const handleGlobalPlayPause = (playerType: 'mobile' | 'desktop') => {
     if (playerType === 'mobile') {
-      // Mobile player is playing, pause desktop
-      setIsPlaying(false);
+      setIsPlaying(false); // Pause desktop player
     } else {
-      // Desktop player is playing, pause mobile
       setIsPlaying(!isPlaying);
-      
-      // Dispatch custom event to notify mobile player to pause
-      if (isPlaying) {
+      if (isPlaying) { // Dispatch event only if desktop player is actually playing
         window.dispatchEvent(new CustomEvent('desktopPlayerStart'));
       }
     }
@@ -455,7 +449,7 @@ const App: React.FC = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <div className="grid grid-cols-2 md:grid-cols-1 gap-2 md:gap-3">
-                  {socialLinks.map((link, index) => (
+                  {socialLinks.map((link) => (
                     <motion.a
                       key={link.label}
                       href={link.url}
