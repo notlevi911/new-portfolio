@@ -394,7 +394,7 @@ const App: React.FC = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
               >
-                hello
+                hello,
               </motion.h1>
               
               <motion.div 
@@ -409,7 +409,7 @@ const App: React.FC = () => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.5 }}
                 >
-                i'm just a developer trying to figure out what really clicks with me.
+                I'm just a developer trying to figure out what really clicks with me.
                 currently in my 3rd year of b.tech.
                 </motion.p>
                 <motion.p 
@@ -418,8 +418,8 @@ const App: React.FC = () => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.6 }}
                 >
-                i tinker with full-stack stuff, devops, and lately genAI (still learning the ropes).
-                outside of coding, i fall into gacha games (trying to keep it under control ehe)
+                I tinker with full-stack stuff, devops, and lately genAI (still learning the ropes).
+                outside of coding, I fall into gacha games (trying to keep it under control ehe)
                 </motion.p>
                 <motion.p 
                   className="leading-relaxed"
@@ -427,7 +427,7 @@ const App: React.FC = () => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.7 }}
                 >
-                and i enjoy watching anime when i want to switch off.                </motion.p>
+                and I enjoy watching anime when I want to switch off.                </motion.p>
               </motion.div>
             </motion.div>
 
