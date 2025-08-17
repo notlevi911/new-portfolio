@@ -49,12 +49,12 @@ const App: React.FC = () => {
   };
 
   const socialLinks = [
-    { icon: Github, label: 'GitHub', url: 'https://github.com' },
-    { icon: Twitter, label: 'Twitter', url: 'https://twitter.com' },
-    { icon: Linkedin, label: 'LinkedIn', url: 'https://linkedin.com' },
-    { icon: MessageCircle, label: 'Discord', url: 'https://discord.com' },
-    { icon: Music, label: 'Spotify', url: 'https://spotify.com' },
-    { icon: Mail, label: 'Email', url: 'mailto:soubha@example.com' },
+    { icon: Github, label: 'GitHub', url: 'https://github.com/notlevi911' },
+    { icon: Linkedin, label: 'LinkedIn', url: 'https://www.linkedin.com/in/soubhagya-sadhukhan-910330270/' },
+    { icon: Twitter, label: 'Twitter', url: 'https://x.com/Soubhag24825728' },
+    { icon: MessageCircle, label: 'Discord', url: 'https://discord.com/users/506085467884879873' },
+    { icon: Music, label: 'Spotify', url: 'https://open.spotify.com/user/c8p45jacg41ya71opu8dfcirh?si=b965c45235224bae' },
+    { icon: Mail, label: 'Email', url: 'mailto:soubhagyasadhukhan@gmail.com' },
   ];
 
   const projects = [
