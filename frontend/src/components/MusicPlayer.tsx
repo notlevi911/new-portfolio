@@ -299,8 +299,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           : 'translate-x-0'
       }`}>
         {/* Desktop: Floating player with smaller height */}
-        <div className="hidden md:block fixed bottom-0 right-0 z-[99999]">
-          <div className="bg-white/80 dark:bg-neutral-800 rounded-tl-lg shadow-lg p-3 w-72">
+        <div className="hidden md:block fixed bottom-4 right-4 z-[99999]">
+          <div className="bg-white/80 dark:bg-neutral-800 rounded-lg shadow-lg p-3 w-72">
             {/* Close button only */}
             <div className="flex justify-end mb-3">
               <button
@@ -427,7 +427,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
           isMinimized ? 'translate-y-full' : 'translate-y-0'
         }`} style={{ bottom: 0 }}>
-          <div className="border-t border-gray-300 dark:border-gray-600 p-3" style={{ minHeight: '80px' }}>
+          <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl" style={{ minHeight: '80px' }}>
             {/* Audio Element */}
             <audio 
               ref={audioRef}
