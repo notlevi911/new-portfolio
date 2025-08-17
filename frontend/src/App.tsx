@@ -13,6 +13,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import MusicPlayer from './components/MusicPlayer';
 import DesktopMusicPlayer from './components/DesktopMusicPlayer';
 
@@ -29,6 +30,8 @@ const App: React.FC = () => {
   const [isShuffled, setIsShuffled] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
   const [playlist, setPlaylist] = useState<any[]>([]);
+  const [visitedPages, setVisitedPages] = useState<Set<string>>(new Set(['home']));
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
   // Function to handle play/pause that automatically pauses other player
   const handleGlobalPlayPause = (playerType: 'mobile' | 'desktop') => {
@@ -44,6 +47,12 @@ const App: React.FC = () => {
         window.dispatchEvent(new CustomEvent('desktopPlayerStart'));
       }
     }
+  };
+
+  // Function to handle page changes and track visited pages
+  const handlePageChange = (page: 'home' | 'projects') => {
+    setCurrentPage(page);
+    setIsMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -161,173 +170,367 @@ const App: React.FC = () => {
   ];
 
   return (
-    <div className="h-screen bg-amber-50 dark:bg-neutral-800 text-gray-800 dark:text-white overflow-hidden">
+    <motion.div 
+      className="h-screen bg-amber-50 dark:bg-neutral-800 text-gray-800 dark:text-white overflow-hidden"
+      initial={false}
+      animate={{
+        backgroundColor: theme === 'light' ? '#fef3c7' : '#262626',
+        color: theme === 'light' ? '#1f2937' : '#ffffff'
+      }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+    >
       {/* Navigation */}
-      <nav className="bg-amber-50 dark:bg-neutral-800 h-16 fixed top-0 left-0 right-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 h-full">
+      <motion.nav 
+        className="h-16 fixed top-0 left-0 right-0 z-50"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <motion.div 
+          className="max-w-6xl mx-auto px-6 h-full"
+          initial={false}
+          animate={{
+            backgroundColor: theme === 'light' ? '#fef3c7' : '#262626'
+          }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
           <div className="flex justify-between items-center h-full">
-            <div className="flex items-center space-x-4">
-              <div className="text-xl font-semibold text-gray-800 dark:text-white">
+            <motion.div 
+              className="flex items-center space-x-4"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <motion.div 
+                className="text-xl font-semibold text-gray-800 dark:text-white"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
                 soubhagya
-              </div>
-              <button
+              </motion.div>
+              <motion.button
                 onClick={toggleTheme}
                 className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
                 aria-label="Toggle theme"
+                whileHover={{ scale: 1.1, rotate: 180 }}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.3 }}
               >
                 {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              <button
-                onClick={() => setCurrentPage('home')}
-                className={`text-sm transition-colors ${
+            <motion.div 
+              className="hidden md:flex items-center space-x-8"
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <motion.button
+                onClick={() => handlePageChange('home')}
+                onHoverStart={() => setHoveredNav('home')}
+                onHoverEnd={() => setHoveredNav(null)}
+                className={`text-sm transition-colors relative pb-1 ${
                   currentPage === 'home' 
                     ? 'text-gray-800 dark:text-white' 
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
                 }`}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
               >
                 Home
-              </button>
-              <button
-                onClick={() => setCurrentPage('projects')}
-                className={`text-sm transition-colors ${
+                <motion.div
+                  className="absolute bottom-0 left-0 w-full h-px bg-gray-800 dark:bg-white rounded-full"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: hoveredNav === 'home' ? 1 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  style={{ originX: 0 }}
+                />
+              </motion.button>
+              <motion.button
+                onClick={() => handlePageChange('projects')}
+                onHoverStart={() => setHoveredNav('projects')}
+                onHoverEnd={() => setHoveredNav(null)}
+                className={`text-sm transition-colors relative pb-1 ${
                   currentPage === 'projects' 
                     ? 'text-gray-800 dark:text-white' 
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
                 }`}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
               >
                 Projects
-              </button>
-              <a
+                <motion.div
+                  className="absolute bottom-0 left-0 w-full h-px bg-gray-800 dark:bg-white rounded-full"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: hoveredNav === 'projects' ? 1 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  style={{ originX: 0 }}
+                />
+              </motion.button>
+              <motion.a
                 href="/Resume (1).pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors"
+                onHoverStart={() => setHoveredNav('cv')}
+                onHoverEnd={() => setHoveredNav(null)}
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors relative pb-1"
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
               >
                 CV
-              </a>
-            </div>
+                <motion.div
+                  className="absolute bottom-0 left-0 w-full h-px bg-gray-800 dark:bg-white rounded-full"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: hoveredNav === 'cv' ? 1 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  style={{ originX: 0 }}
+                />
+              </motion.a>
+            </motion.div>
 
             {/* Mobile Menu Button */}
-            <button
+            <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 text-gray-600 dark:text-gray-300"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.2 }}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            </motion.button>
           </div>
 
           {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-amber-50 dark:bg-neutral-800 border-t border-amber-200/50 dark:border-neutral-700/50">
-              <div className="flex flex-col p-6 space-y-6">
-                <button
-                  onClick={() => {
-                    setCurrentPage('home');
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`text-base transition-colors text-left ${
-                    currentPage === 'home' 
-                      ? 'text-gray-800 dark:text-white' 
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
-                  }`}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div 
+                className="md:hidden fixed top-16 left-0 right-0 bottom-0 bg-amber-50 dark:bg-neutral-800 border-t border-amber-200/50 dark:border-neutral-700/50"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.div 
+                  className="flex flex-col p-6 space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  Home
-                </button>
-                <button
-                  onClick={() => {
-                    setCurrentPage('projects');
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`text-base transition-colors text-left ${
-                    currentPage === 'projects' 
-                      ? 'text-gray-800 dark:text-white' 
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
-                  }`}
-                >
-                  Projects
-                </button>
-                <a
-                  href="/Resume (1).pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-base text-left text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors"
-                >
-                  CV
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+                  <motion.button
+                    onClick={() => handlePageChange('home')}
+                    className={`text-base transition-colors text-left ${
+                      currentPage === 'home' 
+                        ? 'text-gray-800 dark:text-white' 
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
+                    }`}
+                    whileHover={{ x: 10 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Home
+                  </motion.button>
+                  <motion.button
+                    onClick={() => handlePageChange('projects')}
+                    className={`text-base transition-colors text-left ${
+                      currentPage === 'projects' 
+                        ? 'text-gray-800 dark:text-white' 
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
+                    }`}
+                    whileHover={{ x: 10 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Projects
+                  </motion.button>
+                  <motion.a
+                    href="/Resume (1).pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    onHoverStart={() => setHoveredNav('cv-mobile')}
+                    onHoverEnd={() => setHoveredNav(null)}
+                    className="text-base text-left text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors relative pb-1"
+                    whileHover={{ x: 10 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    CV
+                    <motion.div
+                      className="absolute bottom-0 left-0 w-full h-px bg-gray-800 dark:bg-white rounded-full"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: hoveredNav === 'cv-mobile' ? 1 : 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      style={{ originX: 0 }}
+                    />
+                  </motion.a>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </motion.nav>
 
       {/* Main Content */}
-      <div className="h-[calc(100vh-4rem)] overflow-y-auto pt-16">
+      <motion.div 
+        className="h-[calc(100vh-4rem)] overflow-y-auto pt-16"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
         {currentPage === 'home' ? (
           /* Home Page */
-          <div className="min-h-[90%] flex flex-col md:flex-row justify-center items-start md:items-center px-4 md:px-8 md:py-0 pb-20 md:pb-0 pt-4 md:pt-0">
+          <motion.div 
+            className="min-h-[90%] flex flex-col md:flex-row justify-center items-start md:items-center px-4 md:px-8 md:py-0 pb-20 md:pb-0 pt-4 md:pt-0"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
             {/* Left Side - Introduction */}
-            <div className="flex-1 max-w-2xl md:pr-24 mb-8 md:mb-0">
-              <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-gray-800 dark:text-white">
-                hello,
-              </h1>
+            <motion.div 
+              className="flex-1 max-w-2xl md:pr-24 mb-8 md:mb-0"
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              <motion.h1 
+                className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-gray-800 dark:text-white"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+              >
+                hello
+              </motion.h1>
               
-              <div className="space-y-4 md:space-y-6 text-base md:text-lg text-gray-600 dark:text-gray-400">
-                <p className="leading-relaxed">
-                i’m just a developer trying to figure out what really clicks with me.
+              <motion.div 
+                className="space-y-4 md:space-y-6 text-base md:text-lg text-gray-600 dark:text-gray-400"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+              >
+                <motion.p 
+                  className="leading-relaxed"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.5 }}
+                >
+                i'm just a developer trying to figure out what really clicks with me.
                 currently in my 3rd year of b.tech.
-                </p>
-                <p className="leading-relaxed">
+                </motion.p>
+                <motion.p 
+                  className="leading-relaxed"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.6 }}
+                >
                 i tinker with full-stack stuff, devops, and lately genAI (still learning the ropes).
                 outside of coding, i fall into gacha games (trying to keep it under control ehe)
-                </p>
-                <p className="leading-relaxed">
-                and i enjoy watching anime when i want to switch off.                </p>
-              </div>
-            </div>
+                </motion.p>
+                <motion.p 
+                  className="leading-relaxed"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.7 }}
+                >
+                and i enjoy watching anime when i want to switch off.                </motion.p>
+              </motion.div>
+            </motion.div>
 
             {/* Right Side - Social Links Box */}
-            <div className="w-full md:w-80 px-2 md:px-0">
-              <div className="bg-amber-100/50 dark:bg-neutral-700/50 p-4 md:p-6 rounded-2xl backdrop-blur-sm border border-black/20 dark:border-neutral-600/50">
+            <motion.div 
+              className="w-full md:w-80 px-2 md:px-0"
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+            >
+              <motion.div 
+                className="bg-amber-100/50 dark:bg-neutral-700/50 p-4 md:p-6 rounded-3xl backdrop-blur-sm border border-black/20 dark:border-neutral-600/50"
+                initial={false}
+                animate={{
+                  backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(38, 38, 38, 0.5)',
+                  borderColor: theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(82, 82, 82, 0.5)'
+                }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <div className="grid grid-cols-2 md:grid-cols-1 gap-2 md:gap-3">
-                  {socialLinks.map((link) => (
-                    <a
+                  {socialLinks.map((link, index) => (
+                    <motion.a
                       key={link.label}
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex flex-col md:flex-row items-center md:space-x-3 p-2 md:p-3 rounded-xl bg-amber-50/80 dark:bg-neutral-600/80 border border-black/20 dark:border-neutral-500/50 text-gray-600 dark:text-gray-300 hover:bg-amber-200/80 dark:hover:bg-neutral-500/80 hover:text-gray-800 dark:hover:text-white transition-all duration-200 group"
+                      className="flex flex-col md:flex-row items-center md:space-x-3 p-2 md:p-3 rounded-2xl border text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-all duration-200 group"
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ 
+                        y: 0, 
+                        opacity: 1,
+                        backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.8)' : 'rgba(82, 82, 82, 0.8)',
+                        borderColor: theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(107, 114, 128, 0.5)'
+                      }}
+                      transition={{ duration: 0.6, ease: "easeInOut" }}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <link.icon size={18} className="group-hover:scale-110 transition-transform duration-200 mb-1 md:mb-0" />
                       <span className="text-xs md:text-sm font-medium text-center">{link.label}</span>
-                    </a>
+                    </motion.a>
                   ))}
                 </div>
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         ) : (
           /* Projects Page */
-          <div className="h-full p-4 md:p-12 pb-20 md:pb-12 overflow-y-auto">
+          <motion.div 
+            className="h-full p-4 md:p-12 pb-20 md:pb-12 overflow-y-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
             <div className="max-w-6xl mx-auto">
-              <h1 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-gray-800 dark:text-white">
+              <motion.h1 
+                className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-gray-800 dark:text-white"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
                 Projects & Experience
-              </h1>
+              </motion.h1>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                 {/* Projects Section */}
-                <div className="space-y-6">
-                  <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-gray-800 dark:text-white flex items-center">
+                <motion.div 
+                  className="space-y-6"
+                  initial={{ x: -30, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                >
+                  <motion.h2 
+                    className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-gray-800 dark:text-white flex items-center"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.4 }}
+                  >
                     <Code className="mr-2" size={24} />
                     Projects
-                  </h2>
+                  </motion.h2>
                   <div className="space-y-4">
                     {projects.map((project, index) => (
-                      <div key={index} className="bg-amber-100/50 dark:bg-neutral-700/50 p-4 md:p-6 rounded-xl border border-amber-200/50 dark:border-neutral-600/50">
+                      <motion.div 
+                        key={index} 
+                        className="p-4 md:p-6 rounded-xl border"
+                        initial={{ y: 30, opacity: 0 }}
+                        animate={{ 
+                          y: 0, 
+                          opacity: 1,
+                          backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(38, 38, 38, 0.5)',
+                          borderColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(82, 82, 82, 0.5)'
+                        }}
+                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                      >
                         <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">
                           {project.title}
                         </h3>
@@ -336,36 +539,68 @@ const App: React.FC = () => {
                         </p>
                         <div className="flex flex-wrap gap-2 mb-3">
                           {project.tech.map((tech) => (
-                            <span
+                            <motion.span
                               key={tech}
-                              className="px-2 py-1 bg-amber-200/50 dark:bg-neutral-600/50 text-gray-700 dark:text-gray-300 text-xs rounded-lg border border-amber-300/50 dark:border-neutral-500/50"
+                              className="px-2 py-1 text-xs rounded-lg border"
+                              initial={false}
+                              animate={{
+                                backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(82, 82, 82, 0.5)',
+                                color: theme === 'light' ? '#374151' : '#d1d5db',
+                                borderColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(107, 114, 128, 0.5)'
+                              }}
+                              transition={{ duration: 0.6, ease: "easeInOut" }}
+                              whileHover={{ scale: 1.05 }}
                             >
                               {tech}
-                            </span>
+                            </motion.span>
                           ))}
                         </div>
-                        <a
+                        <motion.a
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm text-amber-700 dark:text-amber-400 hover:underline"
+                          whileHover={{ x: 5 }}
+                          transition={{ duration: 0.2 }}
                         >
                           View on GitHub →
-        </a>
-      </div>
+                        </motion.a>
+                      </motion.div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Experience Section */}
-                <div className="space-y-6">
-                  <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-gray-800 dark:text-white flex items-center">
+                <motion.div 
+                  className="space-y-6"
+                  initial={{ x: 30, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                >
+                  <motion.h2 
+                    className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-gray-800 dark:text-white flex items-center"
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                  >
                     <Briefcase className="mr-2" size={24} />
                     Experience
-                  </h2>
+                  </motion.h2>
                   <div className="space-y-4">
                     {experience.map((exp, index) => (
-                      <div key={index} className="bg-amber-100/50 dark:bg-neutral-700/50 p-4 md:p-6 rounded-xl border border-amber-200/50 dark:border-neutral-600/50">
+                      <motion.div 
+                        key={index} 
+                        className="p-4 md:p-6 rounded-xl border"
+                        initial={{ y: 30, opacity: 0 }}
+                        animate={{ 
+                          y: 0, 
+                          opacity: 1,
+                          backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(38, 38, 38, 0.5)',
+                          borderColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(82, 82, 82, 0.5)'
+                        }}
+                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                      >
                         <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-white">
                           {exp.title}
                         </h3>
@@ -382,48 +617,45 @@ const App: React.FC = () => {
                               {i < exp.description.length - 1 ? <br /> : ''}
                             </span>
                           ))}
-        </p>
-      </div>
+                        </p>
+                      </motion.div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
       
       {/* Music Player */}
-      <MusicPlayer 
-        isVisible={isMusicPlayerVisible}
-      />
+      <MusicPlayer isVisible={true} theme={theme} />
 
       {/* Desktop Music Player */}
-      {/* isDesktopPlayerVisible && ( // This line was removed */}
-        <DesktopMusicPlayer
-          isVisible={isMusicPlayerVisible}
-          isMinimized={isMinimized}
-          isPlaying={isPlaying}
-          currentTrack={currentTrack}
-          playlist={playlist}
-          volume={volume}
-          isMuted={isMuted}
-          isShuffled={isShuffled}
-          isRepeating={isRepeating}
-          loadingTrack={null} // loadingTrack was removed
-          onToggle={() => setIsMinimized(!isMinimized)}
-                     onClose={() => setIsMinimized(true)}
-          onPlay={() => handleGlobalPlayPause('desktop')}
-          onPrevious={() => setCurrentTrack(prev => (prev - 1 + playlist.length) % playlist.length)}
-          onNext={() => setCurrentTrack(prev => (prev + 1) % playlist.length)}
-          onShuffle={() => setIsShuffled(!isShuffled)}
-          onRepeat={() => setIsRepeating(!isRepeating)}
-          onMute={() => setIsMuted(!isMuted)}
-          onIncreaseVolume={() => setVolume(prev => Math.min(1, prev + 0.1))}
-          onDecreaseVolume={() => setVolume(prev => Math.max(0, prev - 0.1))}
-        />
-      {/* ) // This line was removed */}
-    </div>
+      <DesktopMusicPlayer
+        isVisible={true}
+        isMinimized={isMinimized}
+        isPlaying={isPlaying}
+        currentTrack={currentTrack}
+        playlist={playlist}
+        volume={volume}
+        isMuted={isMuted}
+        isShuffled={isShuffled}
+        isRepeating={isRepeating}
+        loadingTrack={null}
+        theme={theme}
+        onToggle={() => setIsMinimized(!isMinimized)}
+        onClose={() => setIsMinimized(true)}
+        onPlay={() => handleGlobalPlayPause('desktop')}
+        onPrevious={() => setCurrentTrack(prev => (prev - 1 + playlist.length) % playlist.length)}
+        onNext={() => setCurrentTrack(prev => (prev + 1) % playlist.length)}
+        onShuffle={() => setIsShuffled(!isShuffled)}
+        onRepeat={() => setIsRepeating(!isRepeating)}
+        onMute={() => setIsMuted(!isMuted)}
+        onIncreaseVolume={() => setVolume(prev => Math.min(1, prev + 0.1))}
+        onDecreaseVolume={() => setVolume(prev => Math.max(0, prev - 0.1))}
+      />
+    </motion.div>
   );
 };
 

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipBack, SkipForward } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface MusicPlayerProps {
   isVisible: boolean;
+  theme: 'light' | 'dark';
 }
 
 interface Track {
@@ -12,7 +14,7 @@ interface Track {
   filename: string;
 }
 
-const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
+const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible, theme }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [playlist, setPlaylist] = useState<Track[]>([]);
@@ -206,11 +208,19 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
   if (isLoading) {
     return (
       <div className="fixed bottom-4 right-4 z-50">
-        <div className="bg-white/95 dark:bg-neutral-800 rounded-lg shadow-lg p-4 w-80">
-          <div className="text-center text-gray-600 dark:text-gray-400 py-2">
+        <motion.div 
+          className="rounded-lg shadow-lg p-4 w-80"
+          initial={false}
+          animate={{
+            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(38, 38, 38, 1)',
+            color: theme === 'light' ? '#4b5563' : '#9ca3af'
+          }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          <div className="text-center py-2">
             Loading music from Cloudinary...
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -218,11 +228,19 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
   if (playlist.length === 0) {
     return (
       <div className="fixed bottom-4 right-4 z-50">
-        <div className="bg-white/95 dark:bg-neutral-800 rounded-lg shadow-lg p-4 w-80">
-          <div className="text-center text-gray-600 dark:text-gray-400 py-2">
+        <motion.div 
+          className="rounded-lg shadow-lg p-4 w-80"
+          initial={false}
+          animate={{
+            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(38, 38, 38, 1)',
+            color: theme === 'light' ? '#4b5563' : '#9ca3af'
+          }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
+          <div className="text-center py-2">
             No music available
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -242,14 +260,21 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
       {/* Mobile Minimized State - Up arrow elevated from bottom */}
       {isMinimized && (
         <div className="md:hidden fixed left-1/2 transform -translate-x-1/2 z-[99999]" style={{ bottom: '20px' }}>
-          <button
+          <motion.button
             onClick={handleToggle}
-            className="bg-white dark:bg-neutral-800 p-3 rounded-full shadow-lg border border-gray-300 dark:border-gray-600 hover:scale-105 transition-transform"
+            className="p-3 rounded-full shadow-lg border hover:scale-105 transition-transform"
+            initial={false}
+            animate={{
+              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(38, 38, 38, 1)',
+              borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)',
+              color: theme === 'light' ? '#1f2937' : '#ffffff'
+            }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
           >
-            <svg className="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
             </svg>
-          </button>
+          </motion.button>
         </div>
       )}
 
@@ -257,7 +282,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
       <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
         isMinimized ? 'translate-y-full' : 'translate-y-0'
       }`} style={{ bottom: 0 }}>
-        <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-4 shadow-xl max-h-[80vh] overflow-y-auto" style={{ minHeight: '90px' }}>
+        <motion.div 
+          className="border-t p-4 shadow-xl max-h-[80vh] overflow-y-auto"
+          style={{ minHeight: '90px' }}
+          initial={false}
+          animate={{
+            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(38, 38, 38, 1)',
+            borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)'
+          }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
           {/* Track Info and Controls in one row */}
           <div className="flex items-center justify-between">
             {/* Track Info */}
@@ -313,7 +347,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
               </svg>
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );

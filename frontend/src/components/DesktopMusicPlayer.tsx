@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Repeat, Shuffle, ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Track {
   title: string;
@@ -19,6 +20,7 @@ interface DesktopMusicPlayerProps {
   isShuffled: boolean;
   isRepeating: boolean;
   loadingTrack: number | null;
+  theme: 'light' | 'dark';
   onToggle: () => void;
   onClose: () => void;
   onPlay: () => void;
@@ -42,6 +44,7 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
   isShuffled,
   isRepeating,
   loadingTrack,
+  theme,
   onToggle,
   onClose,
   onPlay,
@@ -146,12 +149,19 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
       {/* Minimized state - Left arrow button (when player is closed/minimized) */}
       {isMinimized && (
         <div className="hidden md:block fixed bottom-4 right-4 z-[99999]">
-          <button
+          <motion.button
             onClick={onToggle}
-            className="bg-white/90 dark:bg-neutral-800/90 p-3 rounded-full shadow-lg hover:scale-105 transition-all duration-200 border border-gray-200 dark:border-neutral-600"
+            className="p-3 rounded-full shadow-lg hover:scale-105 transition-all duration-200 border"
+            initial={false}
+            animate={{
+              backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(38, 38, 38, 0.9)',
+              borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)',
+              color: theme === 'light' ? '#1f2937' : '#ffffff'
+            }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
           >
-            <ChevronLeft className="w-5 h-5 text-gray-800 dark:text-white" />
-          </button>
+            <ChevronLeft className="w-5 h-5" />
+          </motion.button>
         </div>
       )}
       
@@ -159,7 +169,15 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
       <div className={`hidden md:block fixed bottom-4 right-4 z-[99999] transition-transform duration-300 ease-in-out ${
         isMinimized ? 'translate-x-[120%]' : 'translate-x-0'
       }`}>
-        <div className="bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-200 dark:border-neutral-600 w-72 p-2">
+        <motion.div 
+          className="backdrop-blur-sm rounded-xl shadow-2xl border w-72 p-2"
+          initial={false}
+          animate={{
+            backgroundColor: theme === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(38, 38, 38, 0.95)',
+            borderColor: theme === 'light' ? 'rgba(209, 213, 219, 1)' : 'rgba(82, 82, 82, 1)'
+          }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        >
           {/* Header with close button only */}
           <div className="flex justify-end mb-2">
             <button
@@ -260,7 +278,7 @@ const DesktopMusicPlayer: React.FC<DesktopMusicPlayerProps> = ({
               {Math.round((isMuted ? 0 : volume) * 100)}%
             </span>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
