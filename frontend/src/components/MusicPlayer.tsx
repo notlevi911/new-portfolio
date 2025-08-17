@@ -257,7 +257,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
       <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
         isMinimized ? 'translate-y-full' : 'translate-y-0'
       }`} style={{ bottom: 0 }}>
-        <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-4 shadow-xl" style={{ minHeight: '90px' }}>
+        <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-4 shadow-xl max-h-[80vh] overflow-y-auto" style={{ minHeight: '90px' }}>
           {/* Track Info and Controls in one row */}
           <div className="flex items-center justify-between">
             {/* Track Info */}
