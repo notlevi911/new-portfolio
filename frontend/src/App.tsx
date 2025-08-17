@@ -519,8 +519,8 @@ const App: React.FC = () => {
                         animate={{ 
                           y: 0, 
                           opacity: 1,
-                          backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(38, 38, 38, 0.5)',
-                          borderColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(82, 82, 82, 0.5)'
+                          backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.8)' : 'rgba(38, 38, 38, 0.5)',
+                          borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(82, 82, 82, 0.5)'
                         }}
                         transition={{ duration: 0.6, ease: "easeInOut" }}
                         whileHover={{ y: -5, scale: 1.02 }}
@@ -538,9 +538,9 @@ const App: React.FC = () => {
                               className="px-2 py-1 text-xs rounded-lg border"
                               initial={false}
                               animate={{
-                                backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(82, 82, 82, 0.5)',
-                                color: theme === 'light' ? '#374151' : '#d1d5db',
-                                borderColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(107, 114, 128, 0.5)'
+                                backgroundColor: theme === 'light' ? 'rgba(253, 230, 138, 0.8)' : 'rgba(82, 82, 82, 0.5)',
+                                color: theme === 'light' ? '#92400e' : '#d1d5db',
+                                borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.4)' : 'rgba(107, 114, 128, 0.5)'
                               }}
                               transition={{ duration: 0.6, ease: "easeInOut" }}
                               whileHover={{ scale: 1.05 }}
@@ -589,8 +589,8 @@ const App: React.FC = () => {
                         animate={{ 
                           y: 0, 
                           opacity: 1,
-                          backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(38, 38, 38, 0.5)',
-                          borderColor: theme === 'light' ? 'rgba(254, 243, 199, 0.5)' : 'rgba(82, 82, 82, 0.5)'
+                          backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.8)' : 'rgba(38, 38, 38, 0.5)',
+                          borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(82, 82, 82, 0.5)'
                         }}
                         transition={{ duration: 0.6, ease: "easeInOut" }}
                         whileHover={{ y: -5, scale: 1.02 }}
