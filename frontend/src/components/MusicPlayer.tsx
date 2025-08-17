@@ -428,6 +428,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           isMinimized ? 'translate-y-full' : 'translate-y-0'
         } bottom-0`}>
           <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl">
+            {/* Debug: Force visible test */}
+            <div className="text-red-500 text-xs font-bold mb-2">🎵 MUSIC PLAYER VISIBLE 🎵</div>
             {/* Audio Element */}
             <audio 
               ref={audioRef}
