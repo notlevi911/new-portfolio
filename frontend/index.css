@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  scroll-behavior: auto;
+  line-height: 1.5;
+}
+
+body {
+  font-family: 'Graublau Sans Pro', sans-serif;
+}
+
+/* Custom Audio Player Styling */
+audio {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+audio::-webkit-media-controls-panel {
+  display: none;
+}
+
+audio::-webkit-media-controls-play-button {
+  display: none;
+}
+
+audio::-webkit-media-controls-timeline {
+  display: none;
+}
+
+audio::-webkit-media-controls-current-time-display {
+  display: none;
+}
+
+audio::-webkit-media-controls-time-remaining-display {
+  display: none;
+}
+
+audio::-webkit-media-controls-volume-slider {
+  display: none;
+}
+
+audio::-webkit-media-controls-mute-button {
+  display: none;
+}
