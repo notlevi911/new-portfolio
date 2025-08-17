@@ -279,7 +279,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
           </div>
           
           {/* Mobile: Up arrow button at bottom center */}
-          <div className="md:hidden fixed bottom-0 left-1/2 transform -translate-x-1/2 z-[99999]" style={{ bottom: 'calc(env(safe-area-inset-bottom, 16px) + 8px)' }}>
+          <div className="md:hidden fixed left-1/2 transform -translate-x-1/2 z-[99999]" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}>
             <button
               onClick={handleToggle}
               className="bg-white dark:bg-neutral-800 p-2 rounded-full shadow-lg border border-gray-300 dark:border-gray-600"
@@ -426,10 +426,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isVisible }) => {
         {/* Mobile: Bottom-attached player like Spotify - Always visible like navbar */}
         <div className={`md:hidden fixed left-0 right-0 z-[99999] transition-transform duration-300 ease-in-out ${
           isMinimized ? 'translate-y-full' : 'translate-y-0'
-        } bottom-0`} style={{ bottom: 'env(safe-area-inset-bottom, 16px)' }}>
+        }`} style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 20px)' }}>
           <div className="bg-white dark:bg-neutral-800 border-t border-gray-300 dark:border-gray-600 p-3 shadow-xl">
-            {/* Debug: Red test bar to see if mobile player is visible */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-red-500"></div>
             {/* Audio Element */}
             <audio 
               ref={audioRef}
