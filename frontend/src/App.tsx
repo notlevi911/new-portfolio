@@ -11,7 +11,8 @@ import {
   Code,
   Briefcase,
   Menu,
-  X
+  X,
+  Trophy
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MusicPlayer from './components/MusicPlayer';
@@ -127,6 +128,13 @@ const App: React.FC = () => {
 
   const projects = [
     {
+      title: "Avacado",
+      description: "A privacy-focused cryptocurrency wallet that enables users to deposit, withdraw, and transfer funds privately. Built with zero-knowledge proofs (zk-SNARKs) and DeFi integration, Avacado ensures transaction privacy while maintaining security and decentralization.",
+      tech: ["Web3", "ZK-Proofs", "DeFi", "Privacy",],
+      github: "https://github.com/notlevi911/inkei",
+      live: null
+    },
+    {
       title: "Inkei - AI-Powered Project Management",
       description: "Built during the Aignite Hackathon at Heritage College, Inkei is a Jira-inspired project management system powered by AI. Just describe what you want to build, and the chatbot breaks it down into a structured plan with story points. Features include real-time chat, JWT-based authentication, and a clean UI for managing tasks collaboratively.",
       tech: ["React", "AI Integration", "JWT", "Real-time Chat", "Project Management"],
@@ -134,16 +142,9 @@ const App: React.FC = () => {
       live: null
     },
     {
-      title: "URL Shortener SaaS",
-      description: "A full-stack URL shortening service with user authentication, Google OAuth, and analytics. Features include custom slugs, user management, and secure API endpoints. Built with modern web technologies and deployed on Vercel.",
-      tech: ["React", "Node.js", "MongoDB", "JWT", "Google OAuth", "Vercel"],
-      github: "https://github.com/notlevi911/url_shortner",
-      live: "https://url-swart.vercel.app"
-    },
-    {
-      title: "LeetCode Discord Bot",
-      description: "An intelligent Discord bot that provides LeetCode problem solutions, coding challenges, and programming assistance. Built with n8n automation platform for seamless Discord integration and automated responses.",
-      tech: ["Discord API", "n8n", "Automation", "LeetCode Integration", "Bot Development"],
+      title: "PromptPilot",
+      description: "A GPT-style chat platform that adds Git-like version control to prompt engineering. Save conversation snapshots as commits, view and navigate commit history, and roll back to earlier points when needed. Makes experimenting with prompts easier, reproducible, and more organized.",
+      tech: ["React", "Version Control", "GPT Integration", "Chat Interface", "Prompt Engineering"],
       github: "https://github.com/notlevi911/leet-bot",
       live: null
     }
@@ -161,6 +162,19 @@ const App: React.FC = () => {
         "Integrated UI features and APIs, boosting team productivity by 40%",
         "Worked with CI/CD pipelines and agile, cross-timezone collaboration"
       ]
+    }
+  ];
+
+  const achievements = [
+    {
+      title: "3rd Place - 1inch Track",
+      event: "ETHGlobal New Delhi",
+      description: "Won 3rd place in the 1inch track at ETHGlobal New Delhi hackathon, competing against teams from around the world."
+    },
+    {
+      title: "1st Place Winner",
+      event: "Avalanche Team 1 Hackathon",
+      description: "Secured 1st place in the Avalanche Team 1 hackathon, demonstrating excellence in blockchain development and innovation."
     }
   ];
 
@@ -419,7 +433,7 @@ const App: React.FC = () => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.6 }}
                 >
-                I tinker with full-stack stuff, devops, and lately genAI (still learning the ropes).
+                I tinker with full-stack stuff, devops, and lately web3 and genAI (still learning the ropes).
                 outside of coding, I fall into gacha games (trying to keep it under control ehe)
                 </motion.p>
                 <motion.p 
@@ -616,6 +630,51 @@ const App: React.FC = () => {
                       </motion.div>
                     ))}
                   </div>
+
+                  {/* Achievements Section */}
+                  <motion.div 
+                    className="mt-8"
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 0.5 }}
+                  >
+                    <motion.h2 
+                      className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-gray-800 dark:text-white flex items-center"
+                      initial={{ y: -20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.6 }}
+                    >
+                      <Trophy className="mr-2" size={24} />
+                      Achievements
+                    </motion.h2>
+                    <div className="space-y-4">
+                      {achievements.map((achievement, index) => (
+                        <motion.div 
+                          key={index} 
+                          className="p-4 md:p-6 rounded-xl border"
+                          initial={{ y: 30, opacity: 0 }}
+                          animate={{ 
+                            y: 0, 
+                            opacity: 1,
+                            backgroundColor: theme === 'light' ? 'rgba(254, 243, 199, 0.8)' : 'rgba(38, 38, 38, 0.5)',
+                            borderColor: theme === 'light' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(82, 82, 82, 0.5)'
+                          }}
+                          transition={{ duration: 0.6, ease: "easeInOut" }}
+                          whileHover={{ y: -5, scale: 1.02 }}
+                        >
+                          <h3 className="text-lg font-semibold mb-1 text-gray-800 dark:text-white">
+                            {achievement.title}
+                          </h3>
+                          <p className="text-sm text-amber-700 dark:text-amber-400 mb-2">
+                            {achievement.event}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {achievement.description}
+                          </p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
                 </motion.div>
               </div>
             </div>
