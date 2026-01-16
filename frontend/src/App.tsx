@@ -83,8 +83,8 @@ const App: React.FC = () => {
           { title: "Little Waltz", artist: "Classical", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419146/plqh2il8lgjkgyca6myo.mp3", filename: "Little_Waltz.mp3" },
           { title: "Nocturnal", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419169/rwlmkynathwsmgpgpiqg.mp3", filename: "Nocturnal.mp3" },
           { title: "Unshaken", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419192/wlkmuwkzzjyamdfbpbnj.mp3", filename: "Unshaken.mp3" },
-          { title: "NEXT!", artist: "NCTS", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755445587/hy73ehsvspit7nleqfje.mp3", filename: "Unshaken.mp3" },
-          { title: "Montagem Rugada", artist: "JXNDRO, Sayfalse, and cape", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1768565680/w8kcnf6atn6ka5hgegpp.mp3", filename: "Unshaken.mp3" }
+          { title: "NEXT!", artist: "NCTS", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755445587/hy73ehsvspit7nleqfje.mp3", filename: "NEXT.mp3" },
+          { title: "MONTAGEM RUGADA", artist: "JXNDRO, Sayfalse, and cape", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1768565680/w8kcnf6atn6ka5hgegpp.mp3", filename: "Montagem_Rugada.mp3" }
         ];
         
         const availableSongs = allSongs.filter(song => song.url !== "");
