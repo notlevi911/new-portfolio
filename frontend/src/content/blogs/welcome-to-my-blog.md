@@ -15,9 +15,9 @@ in one of the regional hacks, i made a platform called agentmesh (sorry for usin
 
 thought it's pretty crazy for a hackathon idea, never thought i'd make it to the algorand goa retreat, 
 
-when the form came, i filled it and it asked for a demo and i kinda messed it up, like my llm providers were not working but my transactions were working so maybe that's why i got selected 
+when the form came, i filled it and it asked for a demo and i kinda messed it up, like my llm providers were not working but my transactions were working so maybe that's what got me selected
 
-went to goa, nice people there, (istg goa was so fuckin fun ngl) thought let's try and get to top10 which meant i'll get at least 1000 bucks, but well the judges liked our idea and we also integrated goplausible marketplace (algorand marketplace for x402 apis) maybe that's the reason we got the 2nd place, me and my fren were frozen like really frozen 
+went to goa, nice people there, (istg goa was so fuckin fun ngl), thought let's try and get to top10 which meant i'll get at least 1000 bucks, but well the judges liked our idea and we also integrated goplausible marketplace (algorand marketplace for x402 apis) maybe that's the reason we got the 2nd place, me and my fren were frozen like really frozen 
 
 and well still don't know how a hack idea went to this level, thinking to make it a proper startup with the grant we got but well we will see
 
