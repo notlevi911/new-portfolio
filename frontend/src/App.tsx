@@ -17,10 +17,12 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import MusicPlayer from './components/MusicPlayer';
 import DesktopMusicPlayer from './components/DesktopMusicPlayer';
+import BlogsPage from './components/BlogsPage';
+import { playlist as allSongs, type Track } from './data/playlist';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [currentPage, setCurrentPage] = useState<'home' | 'projects'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'projects' | 'blogs'>('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -29,7 +31,7 @@ const App: React.FC = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [isShuffled, setIsShuffled] = useState(false);
   const [isRepeating, setIsRepeating] = useState(false);
-  const [playlist, setPlaylist] = useState<any[]>([]);
+  const [playlist, setPlaylist] = useState<Track[]>([]);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null); // For underline animation
 
   // Function to handle play/pause that automatically pauses other player
@@ -37,15 +39,16 @@ const App: React.FC = () => {
     if (playerType === 'mobile') {
       setIsPlaying(false); // Pause desktop player
     } else {
-      setIsPlaying(!isPlaying);
-      if (isPlaying) { // Dispatch event only if desktop player is actually playing
+      const willPlay = !isPlaying;
+      setIsPlaying(willPlay);
+      if (willPlay) { // Dispatch event only when desktop player is starting playback
         window.dispatchEvent(new CustomEvent('desktopPlayerStart'));
       }
     }
   };
 
   // Function to handle page changes and track visited pages
-  const handlePageChange = (page: 'home' | 'projects') => {
+  const handlePageChange = (page: 'home' | 'projects' | 'blogs') => {
     setCurrentPage(page);
     setIsMobileMenuOpen(false);
   };
@@ -64,45 +67,12 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Initialize real playlist from Cloudinary (same as MusicPlayer)
+  // Initialize playlist and pick a random starting track
   useEffect(() => {
-    const loadMusicFromCloudinary = async () => {
-      try {
-        // Your uploaded songs with Cloudinary URLs (same as MusicPlayer)
-        const allSongs = [
-          { title: "New Home (Slowed)", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418684/x7uiq0a0ztuqxnzkp6yl.mp3", filename: "New_Home_Slowed.mp3" },
-          { title: "City Of Stars", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418705/pcxirwogzl1mhjwqmvec.mp3", filename: "City_Of_Stars.mp3" },
-          { title: "Wind Song", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418732/tgsyhwm230uje0mv6hb0.mp3", filename: "Wind_Song.mp3" },
-          { title: "Amore mio aiutami", artist: "Italian", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418751/hrqvt1a9esa6dszgzb1x.mp3", filename: "Amore_mio_aiutami.mp3" },
-          { title: "Shingeki", artist: "Anime", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418772/v4dbyere7wzefpfh91ti.mp3", filename: "Shingeki.mp3" },
-          { title: "Armstrong Cabin", artist: "Gaming", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418786/qbg3rahkx81ducrhpvmj.mp3", filename: "Armstrong_Cabin.mp3" },
-          { title: "The Last of Us (Astray)", artist: "Gaming", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418847/g5wczzpslsd8phclmkr1.mp3", filename: "The_Last_of_Us_Astray.mp3" },
-          { title: "Engagement Party", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755418865/iuxpolgwhg2dcsi5b4b3.mp3", filename: "Engagement_Party.mp3" },
-          { title: "Only", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419102/gasvwb1s6rzwkvg2xljy.mp3", filename: "Only.mp3" },
-          { title: "Dolce Nonna", artist: "Classical", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419127/zscxnqkfiqzg0nv7gxkq.mp3", filename: "Dolce_Nonna.mp3" },
-          { title: "Little Waltz", artist: "Classical", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419146/plqh2il8lgjkgyca6myo.mp3", filename: "Little_Waltz.mp3" },
-          { title: "Nocturnal", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419169/rwlmkynathwsmgpgpiqg.mp3", filename: "Nocturnal.mp3" },
-          { title: "Unshaken", artist: "Lofi Artist", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755419192/wlkmuwkzzjyamdfbpbnj.mp3", filename: "Unshaken.mp3" },
-          { title: "NEXT!", artist: "NCTS", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1755445587/hy73ehsvspit7nleqfje.mp3", filename: "NEXT.mp3" },
-          { title: "MONTAGEM RUGADA", artist: "JXNDRO, Sayfalse, and cape", url: "https://res.cloudinary.com/dw9dmadvb/video/upload/v1768565680/w8kcnf6atn6ka5hgegpp.mp3", filename: "Montagem_Rugada.mp3" }
-        ];
-        
-        const availableSongs = allSongs.filter(song => song.url !== "");
-        
-        if (availableSongs.length > 0) {
-          setPlaylist(availableSongs);
-          const randomIndex = Math.floor(Math.random() * availableSongs.length);
-          setCurrentTrack(randomIndex);
-          console.log(`Loaded ${availableSongs.length} tracks from Cloudinary`);
-        } else {
-          console.log('No music files found');
-        }
-      } catch (error) {
-        console.error('Error loading music:', error);
-      }
-    };
-
-    loadMusicFromCloudinary();
+    if (allSongs.length > 0) {
+      setPlaylist(allSongs);
+      setCurrentTrack(Math.floor(Math.random() * allSongs.length));
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -129,29 +99,50 @@ const App: React.FC = () => {
 
   const projects = [
     {
-      title: "Avacado",
-      description: "A privacy-focused cryptocurrency wallet that enables users to deposit, withdraw, and transfer funds privately. Built with zero-knowledge proofs (zk-SNARKs) and DeFi integration, Avacado ensures transaction privacy while maintaining security and decentralization.",
-      tech: ["Web3", "ZK-Proofs", "DeFi", "Privacy",],
-      github: "https://github.com/notlevi911/inkei",
+      title: "AlgoGate",
+      description: "Published algogate-sdk on PyPI – one-decorator API route protection via Algorand x402 micropayments, enabling pay-per-use monetization without API key infrastructure. Built an Algorand indexer-based payment verification system with JWT session tokens, nonce tracking, and replay-attack protection, plus a live WebSocket dashboard for real-time monitoring. Won the Algorand Track at BinaryV2, KGEC.",
+      tech: ["Python", "FastAPI", "Algorand", "PyPI", "WebSocket"],
+      github: "https://github.com/notlevi911/algogate-sdk",
       live: null
     },
     {
-      title: "Inkei - AI-Powered Project Management",
-      description: "Built during the Aignite Hackathon at Heritage College, Inkei is a Jira-inspired project management system powered by AI. Just describe what you want to build, and the chatbot breaks it down into a structured plan with story points. Features include real-time chat, JWT-based authentication, and a clean UI for managing tasks collaboratively.",
-      tech: ["React", "AI Integration", "JWT", "Real-time Chat", "Project Management"],
-      github: "https://github.com/notlevi911/inkei",
+      title: "llm-vcs",
+      description: "A GPT-style chat platform with Git-like version control for prompt engineering – commits, branching, rollback, and full history traversal across prompt sessions. Designed a reproducible prompt pipeline enabling structured LLM experimentation with diff and comparison across versions, addressing core reproducibility gaps in AI development.",
+      tech: ["React", "Node.js", "LLM APIs"],
+      github: "https://github.com/notlevi911/vcs-for-llms",
       live: null
     },
     {
-      title: "PromptPilot",
-      description: "A GPT-style chat platform that adds Git-like version control to prompt engineering. Save conversation snapshots as commits, view and navigate commit history, and roll back to earlier points when needed. Makes experimenting with prompts easier, reproducible, and more organized.",
-      tech: ["React", "Version Control", "GPT Integration", "Chat Interface", "Prompt Engineering"],
-      github: "https://github.com/notlevi911/leet-bot",
+      title: "Entropy TicTacToe",
+      description: "A real-time multiplayer strategy game with hidden-information mechanics – players don't know which symbol they control until reveal. Implements dynamic probability updates using the Monty Hall theorem, adding an information-theoretic decision layer with posterior recalculation on each reveal. Architected with server-authoritative game logic over WebSockets (FastAPI), two-phase gameplay, room-based matchmaking, and a React/TypeScript frontend on Vercel.",
+      tech: ["React", "TypeScript", "FastAPI", "WebSocket"],
+      github: "https://github.com/notlevi911/ttt-entropy",
       live: null
     }
   ];
 
   const experience = [
+    {
+      title: "Co-Founder",
+      company: "AgentMesh",
+      location: "Remote",
+      duration: "June 2026 - Present",
+      description: [
+        "Built a no-code visual canvas for composing autonomous AI agent pipelines; each agent node holds a real Algorand wallet and pays for API calls via the x402 micropayment protocol",
+        "Architected Next.js + FastAPI stack with SSE streaming, AES-GCM encrypted mnemonics, OAuth auth, and five LLM providers; 2% take-rate on x402 calls as core revenue model",
+        "Won the Algorand Track at AlgoBharat HackSeries 3.0 Dev Retreat (Goa, June 2025); Avalanche Foundation startup grant recipient"
+      ]
+    },
+    {
+      title: "Founding Engineer",
+      company: "Avacado",
+      location: "Remote",
+      duration: "October 2025 - Present",
+      description: [
+        "Built a privacy-focused DeFi platform using zk-SNARKs (Groth16), ElGamal encryption, and Poseidon hashing for shielded on-chain balances",
+        "Designed Solidity + Circom zero-knowledge circuits, optimizing proof generation time and on-chain verification gas costs"
+      ]
+    },
     {
       title: "Full-Stack Developer Intern",
       company: "Oodser Technologies",
@@ -168,14 +159,19 @@ const App: React.FC = () => {
 
   const achievements = [
     {
-      title: "3rd Place - 1inch Track",
-      event: "ETHGlobal New Delhi",
-      description: "Won 3rd place in the 1inch track at ETHGlobal New Delhi hackathon, competing against teams from around the world."
+      title: "1inch Track Winner",
+      event: "ETHGlobal New Delhi 2025",
+      description: "Won the 1inch track at ETHGlobal New Delhi hackathon, competing against teams from around the world."
     },
     {
-      title: "1st Place Winner",
-      event: "Avalanche Team 1 Hackathon",
-      description: "Secured 1st place in the Avalanche Team 1 hackathon, demonstrating excellence in blockchain development and innovation."
+      title: "2nd Place, Algorand Track",
+      event: "AlgoBharat HackSeries 3.0 Dev Retreat",
+      description: "Secured 2nd place in the Algorand track at AlgoBharat HackSeries 3.0 Dev Retreat (Goa) with AgentMesh, awarded a $4.5k USD prize grant."
+    },
+    {
+      title: "Startup Grant Recipient",
+      event: "Avalanche Foundation - Team 1",
+      description: "Recipient of a $2k USD startup grant from the Avalanche Foundation for Team 1's blockchain development work."
     }
   ];
 
@@ -279,6 +275,27 @@ const App: React.FC = () => {
                   style={{ originX: 0 }}
                 />
               </motion.button>
+              <motion.button
+                onClick={() => handlePageChange('blogs')}
+                onHoverStart={() => setHoveredNav('blogs')}
+                onHoverEnd={() => setHoveredNav(null)}
+                className={`text-sm transition-colors relative pb-1 ${
+                  currentPage === 'blogs'
+                    ? 'text-gray-800 dark:text-white'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
+                }`}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+              >
+                Blogs
+                <motion.div
+                  className="absolute bottom-0 left-0 w-full h-px bg-gray-800 dark:bg-white rounded-full"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: hoveredNav === 'blogs' ? 1 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  style={{ originX: 0 }}
+                />
+              </motion.button>
               <motion.a
                 href="/Resume (1).pdf"
                 target="_blank"
@@ -354,6 +371,19 @@ const App: React.FC = () => {
                   >
                     Projects
                   </motion.button>
+                  <motion.button
+                    onClick={() => handlePageChange('blogs')}
+                    className={`text-base transition-colors text-left ${
+                      currentPage === 'blogs'
+                        ? 'text-gray-800 dark:text-white'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white'
+                    }`}
+                    whileHover={{ x: 10 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Blogs
+                  </motion.button>
                   <motion.a
                     href="/Resume (1).pdf"
                     target="_blank"
@@ -389,7 +419,9 @@ const App: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        {currentPage === 'home' ? (
+        {currentPage === 'blogs' ? (
+          <BlogsPage />
+        ) : currentPage === 'home' ? (
           /* Home Page */
           <motion.div 
             className="min-h-[90%] flex flex-col md:flex-row justify-center items-start md:items-center px-4 md:px-8 md:py-0 pb-20 md:pb-0 pt-4 md:pt-0"
